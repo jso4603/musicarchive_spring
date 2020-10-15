@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+	<!-- 공통,반복적으로 사용되는 SQL 조각을 정의  -->
+	<!-- 게시글을 조회할 때 findKey 조건문  -->
+	<sql id="find">
+		<if test="find_key == 'writer'">
+			AND 
+				writer
+			LIKE 
+				CONCAT('%',#{find_value},'%')
+		</if>
+		<if test="find_key == 'title'">
+			AND 
+				title 
+			LIKE 
+				CONCAT('%',#{find_value},'%')
+		</if>
+		<if test="find_key == 'content'">
+			AND 
+				content 
+			LIKE 
+				CONCAT('%',#{find_value},'%')
+		</if>
+		<if test="find_key == 'sub_con'">
+			AND 
+				title 
+			LIKE
+				CONCAT('%',#{find_value},'%')
+			OR 
+				content 
+			LIKE 
+				CONCAT('%',#{find_value},'%')
+		</if>
+	</sql>
+	
+	<!-- 게시글 테이블의 컬럼  -->
+	<sql id ="boardColumns">
+		  board_id
+		, writer
+		, title
+		, content
+		, read_cnt
+		, reply_cnt
+		, insert_time
+		, update_time
+		, delete_time
+	</sql>
+	
+	<!-- 게시글 전체건수 -->
+	<select id="totCount" resultType="int">
+		SELECT 
+			COUNT(*) totCnt
+		FROM 
+			board
+		WHERE
+			delete_time IS NULL
+		<include refid="find"/>
+	</select>
+	
+	<!-- 게시글 전체조회 -->
+	<select id="selectList" resultType="BoardDTO">
+		SELECT 
+			<include refid="boardColumns"/> 
+		FROM 
+			board
+		WHERE
+			delete_time IS NULL
+		<include refid="find"/>
+		ORDER BY 
+			board_id DESC
+		LIMIT 
+			#{start_no},#{per_page}	
+	</select>
+	
+	<!-- 게시글 상세조회  -->
+	<select id="selectOne" resultType="BoardDTO">
+		SELECT
+			<include refid="boardColumns"/>
+		FROM 
+			board 
+		WHERE
+			delete_time IS NULL
+		AND
+			board_id = #{board_id}
+	</select>
+	
+	<!-- 게시글 저장  -->
+	<insert id="insert" parameterType="BoardDTO">
+		<selectKey keyProperty="board_id" resultType="int" order="BEFORE"> 
+			SELECT 
+				IFNULL(MAX(board_id+1), 1) 
+			FROM 
+				board
+		</selectKey>
+		INSERT INTO board (
+			<include refid="boardColumns"/>
+		) VALUES (
+			  #{board_id}
+			, #{writer}
+			, #{title}
+			, #{content}
+			, 0
+			, 0
+			, NOW()
+			, NULL
+			, NULL	
+		)
+	</insert>
+	
+	<!-- 게시글 수정  -->
+	<update id="update" parameterType="BoardDTO">
+		UPDATE 
+			board
+		SET
+			  update_time = NOW()
+			, writer = #{writer}
+			, title = #{title}
+			, content = #{content}
+		WHERE
+			board_id = #{board_id}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<!-- 실제로 삭제하지 않고 삭제일자를 업데이트하여 전체조회할 때 나오지 않게 하였다.(복구가능성 염두)  -->
+	<update id="delete">
+		UPDATE 
+			board
+		SET
+			delete_time = NOW()
+		WHERE
+			board_id = #{board_id}
+	</update>
+	
+	<!-- 조회수 수정 -->
+	<update id="readcnt_update">
+		UPDATE 
+			board
+		SET 
+			read_cnt = read_cnt + 1
+		WHERE 
+			board_id = #{board_id}
+	</update> 
+		
+	<!-- 댓글수 +1 -->
+	<update id="replycntUp_update">
+		UPDATE 
+			board
+		SET 
+			reply_cnt = reply_cnt + 1
+		WHERE 
+			board_id = #{board_id}
+	</update> 
+			
+	<!-- 댓글수 -1 -->
+	<update id="replycntDown_update">
+		UPDATE 
+			board
+		SET 
+			reply_cnt = reply_cnt - 1
+		WHERE 
+			board_id = #{board_id}
+	</update>
+	
+</mapper>

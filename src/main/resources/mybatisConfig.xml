@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 널값 허용 -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.music.dto.BoardDTO" alias="BoardDTO"/>
+		<typeAlias type="com.music.dto.FileDTO" alias="FileDTO"/>
+		<typeAlias type="com.music.dto.ReplyDTO" alias="ReplyDTO"/>
+		<typeAlias type="com.music.dto.AlbumDTO" alias="AlbumDTO"/>
+		<typeAlias type="com.music.dto.TrackDTO" alias="TrackDTO"/>
+		<typeAlias type="com.music.dto.MemberDTO" alias="MemberDTO"/>
+	</typeAliases>
+</configuration>

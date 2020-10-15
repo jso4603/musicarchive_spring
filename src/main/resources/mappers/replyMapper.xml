@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="replyMapper">
+
+	<!-- 댓글 컬럼  -->
+	<sql id="replyColumns">
+		  board_id
+		, reply_id
+		, writer
+		, content
+		, insert_time
+	</sql>
+
+	<!-- 댓글 추가  -->
+	<insert id="insert" parameterType="ReplyDTO">
+		INSERT INTO reply(
+			<include refid="replyColumns"/>
+		) VALUES(
+			  #{board_id}
+			, #{reply_id}
+			, #{writer}
+			, #{content}
+			, NOW()
+		)
+	</insert>
+
+	<!-- 댓글 조회  -->	
+	<select id="selectList" resultType="ReplyDTO">
+		SELECT 
+			<include refid="replyColumns"/> 
+		FROM 
+			reply
+		WHERE 
+			board_id = #{board_id}
+	</select>
+
+	<!-- 댓글 수정  -->	
+	<update id="update">
+		UPDATE 
+			reply
+		SET 
+			content = #{content}
+		WHERE 
+			reply_id = #{reply_id}
+	</update>
+	
+	<!-- 댓글 삭제  -->
+	<delete id="delete">
+		DELETE 
+		FROM 
+			reply
+		WHERE 
+			reply_id = #{reply_id}
+	</delete>
+	
+	<!-- 게시글ID로 댓글 삭제  -->
+	<delete id="delete_board_id">
+		DELETE 
+		FROM 
+			reply
+		WHERE 
+			board_id = #{board_id}
+	</delete>
+</mapper>

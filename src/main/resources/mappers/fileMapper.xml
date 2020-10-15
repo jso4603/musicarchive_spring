@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fileMapper">
+
+	<!-- 파일 컬럼  -->
+	<sql id="fileColumns">
+		  board_id
+		, file_id
+		, file_name
+		, insert_time
+		, update_time
+		, delete_time
+	</sql>
+
+	<!-- 파일 조회  -->
+	<select id="selectList" resultType="FileDTO">
+		SELECT
+			<include refid="fileColumns"/>
+		FROM
+			file
+		WHERE
+			board_id = #{board_id}
+		AND
+			delete_time IS NULL
+	</select>
+	
+	<!-- 파일 추가  -->
+	<insert id="insert">
+		INSERT INTO file (
+			<include refid="fileColumns"/>
+		) VALUES (
+			  #{board_id}
+			, #{file_id}
+			, #{file_name}
+			, NOW()
+			, NULL
+			, NULL
+		) 
+	</insert>
+	
+	<!-- 파일 수정  -->
+	<update id="update">
+		UPDATE 
+			file 
+		SET 
+			  update_time = NOW()
+			, file_name = #{file_name}
+		where 
+			file_id = #{file_id}	
+	</update>
+		
+	<!-- 파일 삭제  -->
+	<!-- 실제로 삭제하지 않고 삭제일자를 업데이트하여 조회할 때 나오지 않게 하였다.(복구가능성 염두)  -->
+	<update id="delete">
+		UPDATE 
+			file
+		SET
+			delete_time = NOW()
+		WHERE
+			board_id = #{board_id}
+	</update>
+	
+	<!-- 수정 시 일부 파일 삭제  -->
+	<update id="delete_part">
+		UPDATE 
+			file
+		SET
+			delete_time = NOW()
+		WHERE 
+			board_id = #{board_id}
+		<if test="files_id !=''">
+			AND 
+				file_id 
+			NOT IN 
+				(${files_id}) <!-- 34, 56 -->
+		</if>
+	</update>
+</mapper>
