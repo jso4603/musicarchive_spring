@@ -15,10 +15,10 @@ Language/Library
 + Back
   + JAVA JDK 1.8
   + SpringFrameWork 5.2.2
- * MyBatis 3.5.5
- * Maven 4.0
+  + MyBatis 3.5.5
+  + Maven 4.0
 + Front
-  + Jquery
+  + Jquery
   + HTML5
   + Bootstrap4
  
