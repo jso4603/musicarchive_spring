@@ -26,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Map<String, Object> insert(MemberDTO memberDTO) throws Exception {
 		String msg = null;
+		
 		//result : 0(회원가입 성공),1(회원가입 실패)
 		int result = -1;
 		
@@ -38,6 +39,7 @@ public class MemberServiceImpl implements MemberService {
 			
 			
 			memberDAO.insert(memberDTO);
+			
 			msg = "회원가입이 완료되었습니다.";
 			result = 0;
 		} else {
@@ -46,24 +48,30 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		Map<String,Object> resultMap = new HashMap<>();
+		
 		resultMap.put("msg", msg);
 		resultMap.put("result", result);
+		
 		return resultMap;
 	}
 
 	// 회원 조회
 	@Override
 	public MemberDTO selectOne(String user_id) throws Exception {
+		
 		MemberDTO memberDTO = memberDAO.selectOne(user_id);
+		
 		return memberDTO;
 	}
 
 	// 비밀번호 일치여부 확인
 	@Override
 	public boolean checkPW(String password, String insertPW) throws Exception {
+		
 		if(passwordEncoder.matches(insertPW, password)) {
 			return true;
 		}
+		
 		return false;
 	}
 	

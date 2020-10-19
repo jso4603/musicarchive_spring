@@ -1,26 +1,21 @@
-alter database musicarchive default character set UTF8MB4;
-alter table file default character set utf8mb4;
-alter table reply default character set UTF8MB4;
-alter table board default character set UTF8MB4;
-alter table track convert to character set UTF8MB4;
-alter table album convert to character set UTF8MB4;
-show full columns from board;
-
-ALTER TABLE album CONVERT TO CHARACTER SET UTF8MB4;
 
 -- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
 
-DROP TABLE file ;
-DROP TABLE reply ;
-DROP TABLE board ;
+-- board Table Create SQL
+CREATE TABLE member
+(
+    `user_id`              VARCHAR(50)     NOT NULL    COMMENT '아이디', 
+    `password`              VARCHAR(100)    NOT NULL    COMMENT '비밀번호', 
+    `zip_code`         VARCHAR(10)     NULL        COMMENT '우편번호', 
+    `address`         VARCHAR(100)    NULL        COMMENT '주소', 
+    `address_detail`  VARCHAR(100)    NULL        COMMENT '상세주소', 
+    `insert_time`  DATETIME         NOT NULL DEFAULT NOW()    COMMENT '등록일자', 
+    `update_time`  DATETIME         NULL        COMMENT '수정일자',
+	`delete_time`  DATETIME         NULL        COMMENT '삭제일자',
+    PRIMARY KEY (user_id)
+);
 
-DROP TABLE track ;
-DROP TABLE album ;
-DROP TABLE member;
-
-
-select * from board;
-select * from file;
+ALTER TABLE member COMMENT '회원에 관한 테이블';
 
 -- board Table Create SQL
 CREATE TABLE board
@@ -38,6 +33,10 @@ CREATE TABLE board
 );
 
 ALTER TABLE board COMMENT 'community(자유게시판) 게시글을 위한 테이블';
+
+ALTER TABLE board
+    ADD CONSTRAINT FK_board_writer_member_user_id FOREIGN KEY (writer)
+        REFERENCES member (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- board Table Create SQL
 CREATE TABLE file
@@ -74,20 +73,10 @@ ALTER TABLE reply
     ADD CONSTRAINT FK_reply_board_id_board_board_id FOREIGN KEY (board_id)
         REFERENCES board (board_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
         
-select * from album;
-select * from track;
+ALTER TABLE reply
+    ADD CONSTRAINT FK_reply_writer_member_user_id FOREIGN KEY (writer)
+        REFERENCES member (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-SELECT album.album_id,album.album_title,album.artwork_name,
-			   track.track_id,track.track_title,track.lyric,track.file_name
-FROM track
-JOIN album
-ON track.album_id = album.album_id
-WHERE album.album_id = 1;
-
-
-drop table track;
-drop table album;
-        
 -- board Table Create SQL
 CREATE TABLE album
 (
@@ -115,27 +104,4 @@ ALTER TABLE track COMMENT '앨범 수록곡에 관한 테이블';
 ALTER TABLE track
     ADD CONSTRAINT FK_track_album_id_album_album_id FOREIGN KEY (album_id)
         REFERENCES album (album_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-DROP TABLE member;
-select * from member;
-
--- board Table Create SQL
-CREATE TABLE member
-(
-    `user_id`              VARCHAR(50)     NOT NULL    COMMENT '아이디', 
-    `password`              VARCHAR(100)    NOT NULL    COMMENT '비밀번호', 
-    `zip_code`         VARCHAR(10)     NULL        COMMENT '우편번호', 
-    `address`         VARCHAR(100)    NULL        COMMENT '주소', 
-    `address_detail`  VARCHAR(100)    NULL        COMMENT '상세주소', 
-    `insert_time`  DATETIME         NOT NULL DEFAULT NOW()    COMMENT '등록일자', 
-    `update_time`  DATETIME         NULL        COMMENT '수정일자', 
-    PRIMARY KEY (user_id)
-);
-
-ALTER TABLE member COMMENT '회원에 관한 테이블';
-
-ALTER TABLE member
-    ADD CONSTRAINT FK_member_user_id_board_writer FOREIGN KEY (user_id)
-        REFERENCES board (writer) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
 

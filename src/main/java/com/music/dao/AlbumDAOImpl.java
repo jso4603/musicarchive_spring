@@ -26,22 +26,23 @@ public class AlbumDAOImpl implements AlbumDAO {
 	public AlbumDTO selectOne(int album_id) throws Exception {
 		return sqlSession.selectOne("albumMapper.selectOne", album_id);
 	}
-
+	
 	// 앨범 추가
 	@Override
 	public void insert(AlbumDTO albumDTO) throws Exception {
 		sqlSession.insert("albumMapper.insert",albumDTO);
 	}
-
+	
 	// 앨범 수정
 	@Override
 	public void update(AlbumDTO albumDTO) throws Exception {
 		sqlSession.update("albumMapper.update",albumDTO);
 	}
-
+	
 	// 앨범 삭제
 	@Override
 	public void delete(int album_id) throws Exception {
 		sqlSession.delete("albumMapper.delete",album_id);
 	}
+	
 }

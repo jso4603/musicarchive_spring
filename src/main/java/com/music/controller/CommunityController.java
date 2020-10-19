@@ -29,8 +29,11 @@ public class CommunityController {
 	// 자유게시판 메인으로 이동(게시판 전체조회)
 	@RequestMapping("/main")
 	public String communityMain(@ModelAttribute("pageDTO")PageDTO pageDTO,Model model) throws Exception {
+		
 		List<BoardDTO> boardList = boardService.selectList(pageDTO);
+		
 		model.addAttribute("boardList", boardList);
+		
 		return "community/main";
 	}
 	
@@ -42,8 +45,11 @@ public class CommunityController {
 	@RequestMapping(value="/add", method = RequestMethod.POST)
 	public String communityAdd(BoardDTO boardDTO, List<MultipartFile> boardFiles
 			,RedirectAttributes redirectAttributes) throws Exception {
+		
 		boardService.insert(boardDTO, boardFiles);
+		
 		redirectAttributes.addFlashAttribute("msg", "게시물이 작성되었습니다.");
+		
 		return "redirect:/community/main";		
 	}
 	
@@ -51,10 +57,12 @@ public class CommunityController {
 	@Transactional
 	@RequestMapping("/detail")
 	public void communityDetail(int board_id, Model model) throws Exception {
+		
 		//조회수 +1
 		boardService.readcnt_update(board_id);
 
 		Map<String, Object> resultMap = boardService.selectOne(board_id);
+		
 		model.addAttribute("board", resultMap.get("board"));
 		model.addAttribute("file_list", resultMap.get("file_list"));
 	}
@@ -62,15 +70,20 @@ public class CommunityController {
 	// 게시물 삭제
 	@RequestMapping("/delete")
 	public String communityDelete(int board_id, Model model, RedirectAttributes redirectAttributes) throws Exception {
+		
 		boardService.delete(board_id);
+		
 		redirectAttributes.addFlashAttribute("msg", "게시물이 삭제되었습니다.");
+		
 		return "redirect:/community/main";
 	}
 	
 	// 상세정보 가지고 수정폼으로 이동
 	@RequestMapping(value="/modify", method = RequestMethod.GET)
 	public void communityModify(int board_id, Model model) throws Exception {
+		
 		Map<String, Object> resultMap = boardService.selectOne(board_id);
+		
 		model.addAttribute("board", resultMap.get("board"));
 		model.addAttribute("file_list", resultMap.get("file_list"));
 	}
@@ -81,9 +94,12 @@ public class CommunityController {
 			@RequestParam(value="file_id", required = false) List<Integer> fileIdList,
 			List<MultipartFile> boardFiles,
 			RedirectAttributes redirectAttributes) throws Exception {
+		
 		boardService.update(bdto,fileIdList,boardFiles);
+		
 		redirectAttributes.addFlashAttribute("msg", "게시물이 수정되었습니다.");
 		redirectAttributes.addAttribute("board_id", bdto.getBoard_id());
+		
 		return "redirect:/community/main";
 	}
 }

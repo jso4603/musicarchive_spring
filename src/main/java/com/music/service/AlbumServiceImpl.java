@@ -2,6 +2,7 @@ package com.music.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,12 +29,17 @@ public class AlbumServiceImpl implements AlbumService {
 	// 앨범 아트워크 저장하고 파일명을 리턴
 	@Override
 	public String albumUpload(MultipartFile artwork_file) throws Exception {
+		
 		// 파일 이름
 		String artwork_name = null;
 		
 		try {
+			// 파일 한글이 깨지는 현상 방지
+			artwork_name = Normalizer.normalize(artwork_file.getOriginalFilename(), Normalizer.Form.NFC);
+			
 			// 파일이름이 겹치지 않게 생성
-			artwork_name = System.currentTimeMillis() + artwork_file.getOriginalFilename();
+			artwork_name = System.currentTimeMillis() + artwork_name;
+			
 			File f = new File(saveAlbumDir,artwork_name); // 저장할 파일 생성
 			artwork_file.transferTo(f); // f 의 경로에 파일 저장
 		} catch (IllegalStateException e) {
@@ -42,7 +48,8 @@ public class AlbumServiceImpl implements AlbumService {
 		} catch (IOException e) {
 			artwork_name = null;
 			e.printStackTrace();
-		} 	
+		}
+		
 		return artwork_name;
 	}
 

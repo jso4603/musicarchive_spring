@@ -22,9 +22,8 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<!-- 리소스의 매핑정보 알리아스 -->	
-	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/img/**" location="/resources/images/" />
-	<resources mapping="/localimg/**" location="file:///Users/jangsang-og/Downloads/programming/eclipse/spring-workspace/fileupload/" />
+	<resources mapping="/resources/**" location="/resources/"/>
+	<resources mapping="/localimg/**" location="file:///Users/jangsang-og/Downloads/programming/eclipse/spring-workspace/musicarchive_springFramework/src/main/webapp/resources/fileupload/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

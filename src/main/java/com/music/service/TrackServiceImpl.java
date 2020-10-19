@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.Normalizer;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -37,8 +38,10 @@ public class TrackServiceImpl implements TrackService {
 		String file_name = null;
 		
 		try {
+			// 파일 한글이 깨지는 현상 방지
+			file_name = Normalizer.normalize(track_file.getOriginalFilename(), Normalizer.Form.NFC);
 			// 파일이름이 겹치지 않게 생성
-			file_name = System.currentTimeMillis() + track_file.getOriginalFilename();
+			file_name = System.currentTimeMillis() + file_name;
 			File f = new File(saveTrackDir,file_name); // 저장할 파일 생성
 			track_file.transferTo(f); // f 의 경로에 파일 저장
 		} catch (IllegalStateException e) {
@@ -63,10 +66,9 @@ public class TrackServiceImpl implements TrackService {
 			MultipartFile track_file = trackFiles.get(i);
 			String file_name = trackFileUpload(track_file);
 
+			// trackDTO에 파일명 저장
 			TrackDTO trackDTO = trackList.get(i);
 			trackDTO.setFile_name(file_name);
-			
-			System.out.println("trackservice trackDTO : "+trackDTO);
 			
 			// 트랙 정보 저장
 			trackDAO.insert(trackDTO);

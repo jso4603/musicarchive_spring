@@ -30,8 +30,11 @@ public class AlbumController {
 	// Album 화면으로 이동
 	@RequestMapping(value = "/main")
 	public String albumMain(Model model) throws Exception {
+		
 		List<AlbumDTO> album_list = albumSerivce.selectList();
+		
 		model.addAttribute("album_list",album_list);
+		
 		return "album/main";
 	}
 	
@@ -39,6 +42,7 @@ public class AlbumController {
 	@Transactional
 	@RequestMapping(value = "/detail")
 	public void albumDetail(int album_id,Model model) throws Exception {
+		
 		// 앨범 정보 가져오기
 		AlbumDTO albumDTO = albumSerivce.selectOne(album_id);
 		
@@ -52,7 +56,9 @@ public class AlbumController {
 	// 관리자모드 메인화면으로 이동
 	@RequestMapping(value = "/admin/main")
 	public void AdminMain(Model model) throws Exception {
+		
 		List<AlbumDTO> album_list = albumSerivce.selectList();
+		
 		model.addAttribute("album_list",album_list);
 	}
 	
@@ -79,8 +85,11 @@ public class AlbumController {
 	// 관리자모드 앨범삭제 후 메인 폼으로 이동
 	@RequestMapping("/admin/delete")
 	public String AdminDeleteAlbum(int album_id, Model model, RedirectAttributes redirectAttributes) throws Exception {
+		
 		albumSerivce.delete(album_id);
+		
 		redirectAttributes.addFlashAttribute("msg", "앨범이 삭제되었습니다.");
+		
 		return "redirect:/album/admin/main";
 	}
 	

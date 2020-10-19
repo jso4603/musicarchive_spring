@@ -26,6 +26,7 @@ public class ReplyServiceImpl implements ReplyService {
 	public int insert(ReplyDTO replyDTO) throws Exception {
 		// 댓글이 추가될 때 게시판의 댓글 수 +1 
 		boardDAO.replycntUp_update(replyDTO.getBoard_id());
+		
 		return replyDAO.insert(replyDTO);
 	}
 
@@ -41,6 +42,7 @@ public class ReplyServiceImpl implements ReplyService {
 	public int delete(int reply_id, int board_id) throws Exception {
 		// 댓글이 삭제될때 게시판의 댓글수 -1
 		boardDAO.replycntDown_update(board_id);
+		
 		return replyDAO.delete(reply_id);
 	}
 

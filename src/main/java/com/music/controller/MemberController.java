@@ -34,8 +34,10 @@ public class MemberController {
 		Map<String, Object> resultMap = memberService.insert(memberDTO);
 		
 		redirectAttributes.addFlashAttribute("msg",resultMap.get("msg"));
+		
 		// 회원가입 성공
 		if((int)resultMap.get("result") == 0) return "redirect:/login/";
+		
 		// 회원가입 실패
 		return "redirect:/member/join";
 	}
@@ -43,7 +45,9 @@ public class MemberController {
 	// 마이페이지 폼으로 이동
 	@RequestMapping(value ="/modify", method = RequestMethod.GET)
 	public void modify(String user_id,Model model) throws Exception {
+		
 		MemberDTO memberDTO = memberService.selectOne(user_id);
+		
 		model.addAttribute("memberDTO",memberDTO);
 	}
 	
@@ -53,8 +57,10 @@ public class MemberController {
 			RedirectAttributes redirectAttributes) throws Exception {
 		
 		memberService.update(memberDTO);
+		
 		redirectAttributes.addFlashAttribute("msg","정보수정이 완료되었습니다.");
 		redirectAttributes.addAttribute("user_id",memberDTO.getUser_id());
+		
 		return "redirect:/member/modify";
 	}
 	
@@ -73,6 +79,7 @@ public class MemberController {
 
 		if(checkResult) msg = "비밀번호 일치";
 		else msg = "비밀번호 불일치";
+		
 		redirectAttributes.addFlashAttribute("msg",msg);
 		
 		return "redirect:/member/checkPW";
@@ -81,7 +88,9 @@ public class MemberController {
 	// 비밀번호 변경화면으로 이동
 	@RequestMapping(value = "/changePW", method = RequestMethod.GET)
 	public String changePW(String user_id,Model model) throws Exception {
+		
 		MemberDTO memberDTO = memberService.selectOne(user_id);
+		
 		model.addAttribute("memberDTO",memberDTO);
 		return "member/changePW";
 	}
@@ -105,8 +114,11 @@ public class MemberController {
 	// 삭제비밀번호 확인화면으로 이동
 	@RequestMapping(value = "/delete",method = RequestMethod.GET)
 	public String deletePW(String user_id,Model model) throws Exception {
+		
 		MemberDTO memberDTO = memberService.selectOne(user_id);
+		
 		model.addAttribute("memberDTO",memberDTO);
+		
 		return "member/deletePW";
 	}
 	
@@ -116,16 +128,19 @@ public class MemberController {
 			RedirectAttributes redirectAttributes) throws Exception {
 
 		Map<String,Object> resultMap = memberService.delete(memberDTO,insertPW);
+		
 		redirectAttributes.addFlashAttribute("msg",resultMap.get("msg"));
 		
 		// 탈퇴 실패
 		if((int)resultMap.get("result") == 1) {
+			
 			redirectAttributes.addAttribute("user_id",memberDTO.getUser_id());
+			
 			return "redirect:/member/modify";
 		} 
 		
 		// 탈퇴 성공
-		return "redirect:/main/logout";
+		return "redirect:/login/logout";
 	}
 
 }

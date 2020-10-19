@@ -11,6 +11,7 @@ public class StudioController {
 	// 스튜디오 위치 화면 이동
 	@RequestMapping(value="/location", method = RequestMethod.GET)
 	public String studio() throws Exception {
+		
 		return "/studio/location";
 	}
 }

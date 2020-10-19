@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BoardDTO {
+	
 	private int board_id; // 게시글ID(PK)
 	private String writer; // 작성자
 	private String title; // 제목
@@ -19,4 +20,5 @@ public class BoardDTO {
 	private Date insert_time; // 등록일자
 	private Date update_time; // 수정일자
 	private Date delete_time; // 삭제일자
+	
 }

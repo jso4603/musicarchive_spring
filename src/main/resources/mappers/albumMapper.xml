@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="albumMapper">
+
 	<!-- 앨범 테이블의 컬럼  -->
 	<sql id ="albumColumns">
 		  album_id
@@ -31,11 +32,8 @@
 	
 	<!-- 앨범정보 저장  -->
 	<insert id="insert" parameterType="AlbumDTO">
-		<selectKey keyProperty="album_id" resultType="int" order="BEFORE"> 
-			SELECT 
-				IFNULL(MAX(album_id+1), 1) 
-			FROM 
-				album
+		<selectKey keyProperty="album_id" resultType="int" order="AFTER"> 
+			SELECT LAST_INSERT_ID()
 		</selectKey>
 		INSERT INTO album (
 			<include refid="albumColumns"/>

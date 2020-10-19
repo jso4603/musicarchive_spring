@@ -38,7 +38,9 @@ public class TrackDAOImpl implements TrackDAO{
 	// 앨범ID와 트랙ID를 이용하여 트랙정보 조회
 	@Override
 	public TrackDTO selectOne(int album_id, int track_id) throws Exception {
+		
 		Map<String, Integer> map = new HashMap<>();
+		
 		map.put("album_id", album_id);
 		map.put("track_id", track_id);
 		

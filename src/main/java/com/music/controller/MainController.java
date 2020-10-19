@@ -21,25 +21,16 @@ public class MainController {
 	@Resource
 	private AlbumService albumService;
 	
-	// 로그아웃 메인 화면으로 이동
-	@RequestMapping(value = "/logout")
-	public String logoutMain(Model model) throws Exception {
-
-		List<AlbumDTO> albumList = albumService.selectList();
-		model.addAttribute("albumList",albumList);
+	//메인 화면으로 이동
+	@RequestMapping(value = "/main")
+	public void loginMain(PageDTO pageDTO, Model model) throws Exception {
 		
-		return "main/logoutMain";
-	}
-	
-	// 로그인 메인 화면으로 이동
-	@RequestMapping(value = "/login")
-	public String loginMain(PageDTO pageDTO, Model model) throws Exception {
 		//@SessionAttributes("pageDTO") 생성
 		model.addAttribute("pageDTO", pageDTO);
 		
 		List<AlbumDTO> albumList = albumService.selectList();
-		model.addAttribute("albumList",albumList);
 		
-		return "main/loginMain";
+		model.addAttribute("albumList",albumList);
 	}
+	
 }

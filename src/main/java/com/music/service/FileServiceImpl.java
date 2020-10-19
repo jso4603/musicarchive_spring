@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +33,21 @@ public class FileServiceImpl implements FileService {
 	// 다중 파일 업로드하고 파일이름 리스트 반환
 	@Override
 	public List<String> fileUpload(List<MultipartFile> boardFiles) throws Exception {
+		
 		List<String> list = new ArrayList<>();
+		
 		for(MultipartFile multipartFile: boardFiles) {
+			
 			// 파일이름 생성
 			if (multipartFile.getOriginalFilename() != "") { // 파일명이 존재할때만 반복
+				
+				// 파일 한글이 깨지는 현상 방지
+				String file_name = Normalizer.normalize(multipartFile.getOriginalFilename(), Normalizer.Form.NFC);
+				
+				// 파일이름이 겹치지 않게 생성
+				file_name = System.currentTimeMillis() + file_name;
+				
 				// 현재시간과 파일이름 합쳐서 저장
-				String file_name = System.currentTimeMillis()+multipartFile.getOriginalFilename();
 				// 전송할 파일경로와 이름 생성
 				File f = new File(saveDir, file_name);
 				try {
@@ -56,8 +66,11 @@ public class FileServiceImpl implements FileService {
 	// 파일명 리스트를 입력받아 파일명 저장
 	@Override
 	public void insert(int board_id, List<String> filenameList) throws Exception {
+		
 		for(String file_name : filenameList) {
+			
 			FileDTO fileDTO = new FileDTO();
+			
 			fileDTO.setBoard_id(board_id);
 			fileDTO.setFile_name(file_name);
 			
@@ -80,17 +93,21 @@ public class FileServiceImpl implements FileService {
 	// 수정시 일부 파일 삭제
 	@Override
 	public void delete_part(int board_id, List<Integer> files_id_list) throws Exception {
+		
 		String files_id = "";
+		
 		// null처리
 		if (files_id_list != null) {
 			files_id = files_id_list.toString().replace("[", "").replace("]", "");
 		}
+		
 		fileDAO.delete_part(board_id, files_id);
 	}
 
 	// 파일 다운로드
 	@Override
 	public void fileDownload(String file_name, HttpServletResponse response) throws Exception {
+		
 		String fileUrl = saveDir + "/" +file_name;
 
 		try {
@@ -109,6 +126,7 @@ public class FileServiceImpl implements FileService {
 			
 			// 파일 내보내기 스트림  생성
 			OutputStream out = response.getOutputStream();
+			
 			// inputstream에서 데이타를 읽어서 outputstream으로 내보냄
 			FileCopyUtils.copy(fis, out);
 			
@@ -117,26 +135,7 @@ public class FileServiceImpl implements FileService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
-	// 회원 사진 저장하고 파일명을 리턴하는 메소드
-	@Override
-	public String fileUpload(MultipartFile file) {
-		// 파일 이름
-		String file_name = null;
-		
-		try {
-			// 파일이름이 겹치지 않게 생성
-			file_name = System.currentTimeMillis() + file.getOriginalFilename();
-			File f = new File(saveDir,file_name); // 저장할 파일 생성
-			file.transferTo(f); // f 의 경로에 파일 저장
-		} catch (IllegalStateException e) {
-			file_name = null;	
-			e.printStackTrace();
-		} catch (IOException e) {
-			file_name = null;
-			e.printStackTrace();
-		} 	
-		return file_name;
-	}
 }

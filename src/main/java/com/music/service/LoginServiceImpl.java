@@ -23,7 +23,9 @@ public class LoginServiceImpl implements LoginService {
 	// 로그인
 	@Override
 	public Map<String, Object> loginCheck(String user_id, String password) throws Exception {
+		
 		String msg = null;
+		
 		//result : 0(로그인성공),1(아이디미존재),2(패스워드불일치)
 		int result = -1;
 		
@@ -34,17 +36,19 @@ public class LoginServiceImpl implements LoginService {
 			result = 1;	
 		}else {
 			if(passwordEncoder.matches(password, memberDTO.getPassword())){
-				msg = "로그인 성공";
+				msg = "로그인 성공하였습니다.";
 				result = 0;
 			} else {
-				msg = "비밀번호가 다릅니다.";
+				msg = "비밀번호가 일치하지 않습니다.";
 				result = 2;
 			}
 		}
 		
 		Map<String, Object> map = new HashMap<>();
+		
 		map.put("msg", msg);
 		map.put("result", result);
+		
 		return map;	
 	}
 }

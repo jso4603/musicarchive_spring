@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boardMapper">
+
 	<!-- 공통,반복적으로 사용되는 SQL 조각을 정의  -->
 	<!-- 게시글을 조회할 때 findKey 조건문  -->
 	<sql id="find">
@@ -89,11 +90,8 @@
 	
 	<!-- 게시글 저장  -->
 	<insert id="insert" parameterType="BoardDTO">
-		<selectKey keyProperty="board_id" resultType="int" order="BEFORE"> 
-			SELECT 
-				IFNULL(MAX(board_id+1), 1) 
-			FROM 
-				board
+		<selectKey keyProperty="board_id" resultType="int" order="AFTER"> 
+			SELECT LAST_INSERT_ID()
 		</selectKey>
 		INSERT INTO board (
 			<include refid="boardColumns"/>

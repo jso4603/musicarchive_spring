@@ -1,90 +1,123 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/includeFile.jsp" %>
-<%@include file="../include/message.jsp" %>
+<%@ include file="../include/message.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>장상옥MUSICARCHIVE</title>
+	<%@ include file="../include/headBootStrap.jsp" %>
 </head>
-<script type="text/javascript">
-	$(function() {
-		// 회원가입 클릭시
-		$('#btnJoin').on('click', function(e) {
-			e.preventDefault();
+	<script type="text/javascript">
+		$(function() {
 			
-			// 필수 값 체크
-			var user_id = $('#user_id').val();
-			var password = $('#password').val();
-			var repw = $('#repw').val();
+			// 회원가입 클릭시
+			$('#btnJoin').on('click', function(e) {
+				e.preventDefault();
+				
+				// 필수 값 체크
+				var user_id = $('#user_id').val();
+				var password = $('#password').val();
+				var repw = $('#repw').val();
+				
+				if (user_id == ''){
+					alert('아이디를 입력하세요.');
+					$('#user_id').focus();
+				} else if (password == ''){
+					alert('패스워드를 입력하세요.');
+					$('#password').focus();
+				} else if (password != repw){
+					alert('패스워드가 일치하지 않습니다.');
+					$('#repw').focus();
+				} else {
+					$('#joinForm').attr('action', '${path}/member/join');
+		 			$('#joinForm').attr('method', 'post');
+		 			
+		 			$('#joinForm').submit();
+				}
+			});
 			
-			if (user_id == ''){
-				alert('아이디를 입력하세요.');
-				$('#user_id').focus();
-			} else if (password == ''){
-				alert('패스워드를 입력하세요.');
-				$('#password').focus();
-			} else if (password != repw){
-				alert('패스워드가 일치하지 않습니다.');
-				$('#repw').focus();
-			} else {
-				$('#joinForm').attr('action', '${path}/member/join');
-	 			$('#joinForm').attr('method', 'post');
-	 			
-	 			$('#joinForm').submit();
-			}
+			// 취소 클릭 시
+			$('#btnCancel').on('click', function(e) {
+				e.preventDefault();
+				$(location).attr('href', '${path}/main/main');
+			});
+	
 		});
-		
-		// 취소 클릭 시
-		$('#btnCancel').on('click', function(e) {
-			e.preventDefault();
-			$(location).attr('href', '${path}/main/logout');
-		});
-
-	});
-
-</script>
+	
+	</script>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<h2>회원가입</h2>
-	<hr>
-	
-	<form id="joinForm">
-		<table>
-			<tr>
-				<th>*아이디</th>
-				<td><input type="text" id="user_id" name="user_id"></td>
-			</tr>
-			<tr>
-				<th>*비밀번호</th>
-				<td><input type="password" id="password" name="password"></td>
-			</tr>
-			<tr>
-				<th>*비밀번호 재입력</th>
-				<td><input type="password" id="repw" name="repw"> </td>
-			</tr>
-			<tr>
-				<th>우편번호</th>
-				<td><input type="text" id="zip_code" name="zip_code"></td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td><input type="text" id="address" name="address"></td>
-			</tr>
-			<tr>
-				<th>상세주소</th>
-				<td><input type="text" id="address_detail" name="address_detail"></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-					<button id="btnJoin">가입</button>
-					<button id="btnCancel">취소</button>
-				</td>
-			</tr>
-		</table>
-	</form>
+
+	<!-- ##### Form Area Start ##### -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-9">
+                <div class="contact-content mb-100">
+                    
+                    <div class="contact-form-area mb-70">
+                        <h4 class="mb-50">회원가입</h4>
+
+                        <form id="joinForm">
+                            <div class="row">
+                            
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="user_id" name="user_id" placeholder="*ID">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="*PW">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" id="repw" name="repw" placeholder="*재입력">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="우편번호">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="주소">
+                                </div>
+                                
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="address_detail" name="address_detail" placeholder="상세주소">
+                                </div>
+                                
+                                <div class="col-12">
+                                    <button class="btn bueno-btn mt-30" id="btnJoin">가입</button>
+                                    <button class="btn bueno-btn mt-30" id="btnCancel">취소</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Form Area End ##### -->
 	
 	<%@ include file="../include/footer.jsp" %>
+	<%@ include file="../include/footBootStrap.jsp" %>
 </body>
 </html>

@@ -11,6 +11,7 @@
 		, address_detail
 		, insert_time
 		, update_time
+		, delete_time
 	</sql>
 	
 	<!-- 회원 상세조회  -->
@@ -20,6 +21,8 @@
 		FROM 
 			member 
 		WHERE
+			delete_time IS NULL
+		AND
 			user_id = #{user_id}
 	</select>
 	
@@ -35,6 +38,7 @@
 			, #{address_detail}
 			, NOW()
 			, NULL
+			, NULL
 		)
 	</insert>
 	
@@ -43,8 +47,7 @@
 		UPDATE 
 			member
 		SET
-			  update_time = NOW()
-			, zip_code = #{zip_code}
+			  zip_code = #{zip_code}
 			, address = #{address}
 			, address_detail = #{address_detail}
 		WHERE
@@ -55,18 +58,22 @@
 	<update id="changePW">
 		UPDATE 
 			member
-		SET 
+		SET
+			update_time = NOW(), 
 			password = #{password}
 		WHERE 
 			user_id = #{user_id}
 	</update>
 	
 	<!-- 회원 탈퇴 -->
-	<delete id="delete">
-		DELETE FROM 
+	<!-- 실제로 삭제하지 않고 삭제일자를 업데이트하여 조회할 때 나오지 않게 하였다.(복구가능성 염두)  -->
+	<update id="delete">
+		UPDATE 
 			member
+		SET
+			delete_time = NOW()
 		WHERE
 			user_id = #{user_id}
-	</delete>
+	</update>
 
 </mapper>

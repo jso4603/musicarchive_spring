@@ -29,23 +29,30 @@ public class ReplyController {
 	// produces="application/text; charset=utf-8" : 반환값 문자 한글처리
 	@RequestMapping(value="/", method = RequestMethod.POST, produces="application/text; charset=utf-8")
 	public ResponseEntity<String> replyInsert(@RequestBody ReplyDTO replyDTO) throws Exception {
+		
 		replyService.insert(replyDTO);
+		
 		//응답객체를 생성해서 상태값 같이 전송
 		return new ResponseEntity<>("댓글이 작성되었습니다.", HttpStatus.OK);
+		
 		//return new ResponseEntity<>("실패", HttpStatus.BAD_REQUEST);
 	}
 	
 	// 댓글 전체조회
 	@RequestMapping(value="/{board_id}", method = RequestMethod.GET)
 	public ResponseEntity<List<ReplyDTO>> replyList(@PathVariable("board_id") int board_id) throws Exception {
+		
 		List<ReplyDTO> list = replyService.selectList(board_id);
+		
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
 	// 댓글 삭제
 	@RequestMapping(value="/{reply_id}", method = RequestMethod.DELETE, produces="application/text; charset=utf-8")
 	public ResponseEntity<String> replyDelete(@PathVariable("reply_id") int reply_id,int board_id) throws Exception {
+		
 		replyService.delete(reply_id, board_id);
+		
 		//응답객체를 생성해서 상태값 같이 전송
 		return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.OK);
 	}
@@ -54,8 +61,11 @@ public class ReplyController {
 	@RequestMapping(value="/{reply_id}", method = {RequestMethod.PUT,RequestMethod.PATCH},  
 			produces="application/text; charset=utf-8")
 	public ResponseEntity<String> replyUpdate(@PathVariable("reply_id") int reply_id,@RequestBody ReplyDTO replyDTO) throws Exception {
+		
 		replyDTO.setReply_id(reply_id); //댓글번호 세팅
+		
 		replyService.update(replyDTO);
+		
 		//응답객체를 생성해서 상태값 같이 전송
 		return new ResponseEntity<>("댓글이 수정되었습니다.", HttpStatus.OK);
 	}

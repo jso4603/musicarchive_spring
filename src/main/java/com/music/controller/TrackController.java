@@ -1,11 +1,8 @@
 package com.music.controller;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +33,11 @@ public class TrackController {
 			,RedirectAttributes redirectAttributes) throws Exception {
 
 		List<TrackDTO> trackList = trackDTO.getTrackList();
-		System.out.println("controller trackList : "+trackList);
-		System.out.println("controller trackFiles : "+trackFiles);
+		
 		trackService.insert(trackList,trackFiles);
+		
 		redirectAttributes.addFlashAttribute("msg", "앨범이 추가되었습니다.");
+		
 		return "redirect:/album/admin/main";		
 	}
 	
@@ -50,10 +48,10 @@ public class TrackController {
 		
 		TrackDTO trackDTO = trackService.selectOne(album_id,track_id);
 		AlbumDTO albumDTO = albumService.selectOne(album_id);
+		
 		model.addAttribute("trackDTO",trackDTO);
 		model.addAttribute("albumDTO",albumDTO);
 	
-		
 		return "album/trackDetail";
 	}	
 }

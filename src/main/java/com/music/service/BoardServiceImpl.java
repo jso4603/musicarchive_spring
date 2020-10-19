@@ -30,6 +30,7 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public List<BoardDTO> selectList(PageDTO pageDTO) throws Exception {
+		
 		// PageDTO 구하기
 		
 		// 전체게시물수
@@ -69,6 +70,7 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public Map<String, Object> selectOne(int board_id) throws Exception {
+		
 		Map<String, Object> map = new HashMap<>();
 		
 		// 게시물 한건조회
@@ -84,6 +86,7 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public void insert(BoardDTO boardDTO, List<MultipartFile> boardFiles) throws Exception {
+		
 		// 게시물 추가
 		boardDAO.insert(boardDTO);
 		int board_id = boardDTO.getBoard_id();
@@ -99,6 +102,7 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public void update(BoardDTO boardDTO, List<Integer> fileIdList, List<MultipartFile> boardFiles) throws Exception {
+		
 		// 게시물 수정
 		boardDAO.update(boardDTO);
 		int board_id = boardDTO.getBoard_id();
@@ -114,16 +118,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	// 게시글 삭제
-	@Transactional
 	@Override
 	public void delete(int board_id) throws Exception {
-		// 주의 : 자식테이블 삭제후 부모테이블 삭제(foreign key관계)
-		// 댓글 삭제
-		replyService.delete_board_id(board_id);
-		
-		// 파일 삭제
-		fileService.delete(board_id);
-		
 		// 게시물 삭제
 		boardDAO.delete(board_id);
 	}

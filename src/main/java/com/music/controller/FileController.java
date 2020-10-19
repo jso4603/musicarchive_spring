@@ -18,6 +18,7 @@ public class FileController {
 	// 자유게시판 파일 다운로드
 	@RequestMapping("/download")
 	public void fileDownload(String file_name, HttpServletResponse response) throws Exception {
+		
 		fileService.fileDownload(file_name, response);
 	}
 }
