@@ -24,7 +24,7 @@ Language/Library
  
 Tools
 + Eclipse 2020-06 (4.16.0)
-+ Git
++ Git
 
 Database
 + MySQL 8.0.21 (WorkBench 8.0)
