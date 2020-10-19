@@ -8,8 +8,8 @@
 
 ## 개발환경
 OS/Server
-+Mac OS High Sierra
-+Apache Tomcat 9.0
++ Mac OS High Sierra
++ Apache Tomcat 9.0
 
 Language/Library
 +Back
@@ -34,7 +34,6 @@ Cloud
 + RDS(MySQL Community)
 
 # 주요기능
-------------
 사용자
 + 로그인 & 회원가입
 + 마이페이지 정보수정 & 탈퇴
