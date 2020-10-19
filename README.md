@@ -19,7 +19,7 @@ Language/Library
   + Maven 4.0
 + Front
   + Jquery
-  + HTML5 
+  + HTML5
   + Bootstrap4
  
 Tools
