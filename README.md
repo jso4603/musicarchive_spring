@@ -19,8 +19,8 @@ Language/Library
   + Maven 4.0
 + Front
   + Jquery
-  + HTML5
-  + Bootstrap4
+  + HTML5
+  + Bootstrap4
  
 Tools
 + Eclipse 2020-06 (4.16.0)
