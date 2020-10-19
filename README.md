@@ -18,8 +18,8 @@ Language/Library
   + MyBatis 3.5.5
   + Maven 4.0
 + Front
-  + Jquery
-  + HTML5
+  + Jquery  
+  + HTML5 
   + Bootstrap4
  
 Tools
