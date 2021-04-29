@@ -36,6 +36,7 @@ Cloud
 + AWS EC2 Free Tier
 + RDS(MySQL Community)
 
+
 # 주요기능
 사용자
 + 로그인 & 회원가입
